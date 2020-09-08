@@ -30,6 +30,7 @@
             <div class="catalog-collection">
                 <display-item
                     v-for="item in displayItems.items"
+                    v-if="item.id"
                     v-bind:item="item"
                     v-bind:key="item.id"
                     v-bind:selectedIds="selectedIds"

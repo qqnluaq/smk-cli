@@ -9,9 +9,16 @@ vueComponent( import.meta.url, {
             if ( item.type && item.type != 'layer' ) return item.type
             return this.$store.getters.configLayer( this.itemId ).type
         },
-        typeColour: function () { return itemTypePresentation[ this.type ].colour },
-        typeTitle: function () { return itemTypePresentation[ this.type ].title },
-        typeIcon: function () { return itemTypePresentation[ this.type ].icon },
+        presentation: function () {
+            return itemTypePresentation[ this.type ] || {
+                colour: 'blue-grey',
+                title: `[${ this.type }]`,
+                icon: 'explore'
+            }
+        },
+        typeColour: function () { return this.presentation.colour },
+        typeTitle: function () { return this.presentation.title },
+        typeIcon: function () { return this.presentation.icon },
         title: function () {
             var item = this.getDisplayItem( this.itemId )
             return item.title || this.$store.getters.configLayer( this.itemId ).title
@@ -19,12 +26,12 @@ vueComponent( import.meta.url, {
         metadataUrl: function () {
             return this.$store.getters.configHasLayer( this.itemId ) && this.$store.getters.configLayer( this.itemId ).metadataUrl
         },
-        allowedEdit: function () { return !this.allowed || this.allowed.edit !== false },
-        allowedRemove: function () { return !this.allowed || this.allowed.remove !== false },
+        allowedEdit: function () { return ( !this.allowed || this.allowed.edit !== false ) && itemTypePresentation[ this.type ] },
+        allowedRemove: function () { return ( !this.allowed || this.allowed.remove !== false ) && itemTypePresentation[ this.type ] },
         isVisible: {
             get: function () {
                 var item = this.getDisplayItem( this.itemId )
-                if ( item.isVisible != null || itemTypePresentation[ this.type ].collection ) return item.isVisible
+                if ( item.isVisible != null || this.presentation.collection ) return item.isVisible
                 return this.$store.getters.configLayer( this.itemId ).isVisible
             },
             set: function ( val ) {

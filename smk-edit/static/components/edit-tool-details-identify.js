@@ -45,7 +45,9 @@ export default importComponents( [
                     return this.$store.getters.configTool( this.toolType, this.toolInstance ).radius
                 },
                 set: function ( val ) {
-                    this.$store.dispatch( 'configTool', { type: this.toolType, instance: this.toolInstance, radius: val } )
+                    var i = parseInt(val)
+                    if ( i )
+                        this.$store.dispatch( 'configTool', { type: this.toolType, instance: this.toolInstance, radius: i } )
                 }
             },
             radiusUnit: {
