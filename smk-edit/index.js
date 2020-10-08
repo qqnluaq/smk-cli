@@ -61,7 +61,9 @@ function startService( opt ) {
     } )
 
     app.use( express.static( path.resolve( __dirname, 'static' ) ) )
-    app.use( '/module', express.static( path.dirname( require.resolve( opt.smkPackage ) ) ) )
+    // app.use( '/module', express.static( path.dirname( require.resolve( opt.smkPackage ) ) ) )
+    app.use( '/module', express.static( path.dirname( require.resolve( opt.smkPackage, { paths:[ app.get( 'base' ) ] } ) ) ) )
+    require.resolve('smk',{paths:[process.cwd()]})
     app.use( '/module', express.static( path.dirname( require.resolve( 'material-design-icons-iconfont' ) ) ) )
     app.use( '/layers', express.static( app.get( 'layers' ) ) )
     app.use( '/assets', express.static( app.get( 'assets' ) ) )
